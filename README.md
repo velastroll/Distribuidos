@@ -5,11 +5,11 @@
             - Consumidor.java
             - Main.java
             - Productor.java
-    - bin
     
- # 2LabP
+# 2LabP
 
  Implementamos un cliente servidor con envío de primitivas. Se nos pide la inserción de una nueva primitiva que en vez de sacar el primer elemento de la cola, nos diga cual es, en caso de haber.
+ 
     - src
         - client
             - Cliente.java
