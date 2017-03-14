@@ -1,0 +1,76 @@
+# COMUNICACIÓN CON UDP
+PLantea problemas similares a los sockets TCP, aunque se manifiestan ficicultades
+técnicas que no son frecuentes.
+Se va a dar uso a los hilos por tareas en caso de que sea muy pesada, en vez de hilo por 
+cliente.
+UDP es mucho más ágil. TCP nos proporciona muchas cosas, control de flujo y demás, pero 
+a un precio como de gasto de recursos.
+UDP como que nos tira pa atrás por no ser fiable, al igual que se vuelve complicado en el
+envío de datos de tamaño desconocido, ya que toca fragmentar si el sistema está diseñado 
+para tramas pequeñas.
+Las conexiones TCP están bien, pero también se rompen.
+    - TCP:
+ Mantiene las sesiones abiertas mediante un hilo con cada cliente.
+ Como se utiliza streams, es todo más sencillo.
+ La cantidad de datos que se pueden enviar es indeterminada.
+ Cuando queremos gestionar la espera o bloqueo, es más sencillo ya que olo bloqueas a uno,
+ no a todos.
+    ¿POR QUÉ NO USARLO?
+    Se usan hilos para todos, po lo que no se gstiona bien. Una máquina así es peligrosa
+    ya que puede ser atacada por denegación de servicio. Con el 'fixed_full_fork' seleccionamos
+    el numero de hilos que queremos que puedan ser abiertos, pero si no lo determinas te pueden
+    cargar la máquina.
+    En TCP también se pierden, solo que intetna recuperarlo, por lo que va más lento.
+    
+    - UDP
+Se fragemntan los datos en tramas largas, y en caso de perderlo no lo recupera, porque busca
+velocidad.
+La sesión no se guarda, por lo que hay que recordarla expresamente.
+La ventaja de UDP es que si se pide poco con cada usuario, en vez de 200 clientes se pueden 
+tener mil. De todas formas UDP ya no es lo que era, ahora es más fiable, y más ágil, además de
+que ahora ya se puede crear hilos cuando sea necesario. Veremos ahora coo crearlos.
+Si la peticion es bloqueante o tarda mucho, podemos crear el hilo.
+También es adecuado el uDP para el streaming de video o audio. PAra ello se necesitan bufferes
+en vez de la cola directamente. TCP busca tener un flujo perfecto sin fallos, por lo que ves Una
+peli en FULLHD sin pérdida de calidad de imagen, pero que no para de cortarse, en csmbio UDP puede
+perder calidad, pero no se corta.
+
+# 3 Sockets UDP en Java (cliente-servidor Echo)
+
+Practicamos el cliente echo sencillo,
+    - src
+        - UDPServer
+            -UDPEchoServer.java
+        - UDPClient
+            -ClienteSimple.java
+Para dejar en espera los clientes, pulsamos Ctrl+Z. PAra matarlos después, `kill -9 %numero`
+
+# 4 SESIONES EN UN SERVIDOR MONOHEBRADO
+Parece muy complicado usar tablas hash, pero utilizamos el bit de sesión.
+Lo bueno de java es poder leer una array de bytes como si fuese un String, ya sea de entrada o salida.
+Una vez que tengamos el String, podemos usar el OutputString o InputString.
+
+# 5 SERIALIZACIÓN CON SOCKETS UDP
+Si queremos usar XML / JSON / Objetos JAva, podemos usar sus encoders o decoders que tenemos accesibles
+para serializar o deserializar.
+Vamos a necesitar:
+    - PRimitive.java (Leccion2)
+    - MensajeProtocolo.java (Leccion2)
+    - ColaStrings.java (Leccion2)
+Como esto es un engorronao, vamos a utilizar la clase UDPHelper.
+
+# 6 MULTIENHEBRADO CALLABLE EN SERVIDORES MONOHEBRADOS
+    - serializacion
+        - Primitive.java
+        - Cliente0.java
+        - ColaStrings.java
+        - MensajeProtocolo.java
+        - UDPHelper.java
+        - UDPProtocolServer.java
+Compilamos y nos queda:
+    - cliente
+        - ProtocolClient
+        - Mensajes
+    - servidor
+        - ProtocolServer
+        - Mensajes
