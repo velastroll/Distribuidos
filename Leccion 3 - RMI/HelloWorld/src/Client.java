@@ -3,7 +3,7 @@ package helloClient;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import helloServer.*;
+import helloServer.Hello;
 public class Client {
    private Client () { }
 
@@ -14,8 +14,10 @@ public class Client {
             Registry registro = LocateRegistry.getRegistry(host);
             Hello stub = (Hello) registro.lookup(***);
           */
-         Hello stub = (Hello) Naming.lookup("rmi://ObjetoHello/"); /* ¿Qué hay aquí?*/
 
+         /** stub = enlace al objeto remoto */
+         Hello stub = (Hello) Naming.lookup("rmi://localhost/ObjetoHello");
+         System.out.print("\n Ojo que lo coge! \n");
          String respuesta = stub.sayHello();
          System.out.println("[Respuesta: "+respuesta+"]");
       } catch (Exception e) {
